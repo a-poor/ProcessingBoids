@@ -1,3 +1,6 @@
+// Boid.pde
+// Created by Austin Poor
+
 class Boid {
   PVector pos, vel, accel;
   float d = 5; // Radius of the boid

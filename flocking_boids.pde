@@ -1,3 +1,6 @@
+// flocking_boids.pde
+// Created by Austin Poor
+
 boolean save_frames = false;
 int start_frame = 0; // Start at frame 0
 int end_frame = 24*30; // Stop after 30 seconds @ 24fps

@@ -72,6 +72,8 @@ class Boid {
     pos.add(vel);
     accel.mult(0);
 
+    // If the boid goes off-screen, wrap
+    // around to the other side
     if (pos.x < 0) pos.x = width;
     else if (pos.x >= width) pos.x = 0;
     if (pos.y < 0) pos.y = height;

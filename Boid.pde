@@ -1,11 +1,13 @@
 class Boid {
   PVector pos, vel, accel;
-  float d = 5;
-  float sight_radius = 10;
-  float max_force = 1;
-  float max_speed = 4;
-  float accel_delta = 0.85;
+  float d = 5; // Radius of the boid
+  float sight_radius = 10; // Radius for boids to be affected by other boids
+  float max_force = 1; // Max force that can be applied by sep/align/coh
+  float max_speed = 4; // Max speed for the boid
+  float accel_delta = 0.85; // Extra scalar to modify the boid acceleration
   
+  // Relative weights for the boid separation,
+  // alignment, and cohesion
   float sep_mult = 1;
   float align_mult = 1;
   float coh_mult = 0;
@@ -17,6 +19,8 @@ class Boid {
   }
 
   void show() {
+    // Settings for how the boids look:
+    // FILL vs STROKE
     // Just outline…
     noFill();
     stroke(255);
@@ -24,6 +28,8 @@ class Boid {
     // Just fill…
     //noStroke();
     //fill(255);
+    
+    // SHAPE
     //Draw as triangle…
     push();
     translate(pos.x, pos.y);
@@ -59,9 +65,10 @@ class Boid {
     
     accel.mult(accel_delta);
 
-    // Update velocity, position, clear acceleration
+    // Update velocity, position, then reset acceleration
     vel.add(accel);
-    //vel.setMag(max_speed);
+     //vel.setMag(max_speed); // Always move at max speed?
+    vel.limit(max_speed);   // Clamp velocity to max speed
     pos.add(vel);
     accel.mult(0);
 
@@ -72,6 +79,8 @@ class Boid {
   }
 
   PVector sep(Boid[] flock) {
+    // Calculate the separation
+    // Avoid crowding local flockmates
     PVector movement = new PVector(0, 0);
     int n = 0;
     for (int i = 0; i < flock.length; i++) {
@@ -93,6 +102,9 @@ class Boid {
   }
 
   PVector ali(Boid[] flock) {
+    // Calculate the alignment
+    // Steer towards the average
+    // direction of local flockmates
     PVector avg_vel = new PVector(0, 0);
     int n = 0;
     for (int i = 0; i < flock.length; i++) {
@@ -112,6 +124,9 @@ class Boid {
   }
 
   PVector coh(Boid[] flock) {
+    // Calculate the cohesion
+    // Steer towards the average
+    // position of local flockmates
     PVector avg_pos = new PVector(0, 0);
     int n = 0;
     for (int i = 0; i < flock.length; i++) {
